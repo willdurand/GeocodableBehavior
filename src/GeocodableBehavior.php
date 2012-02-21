@@ -17,19 +17,20 @@ class GeocodableBehavior extends Behavior
     // default parameters value
     protected $parameters = array(
         // Base
-        'auto_update'           => 'true',
-        'latitude_column'       => 'latitude',
-        'longitude_column'      => 'longitude',
+        'auto_update'               => 'true',
+        'latitude_column'           => 'latitude',
+        'longitude_column'          => 'longitude',
         // IP-based Geocoding
-        'geocode_ip'            => 'false',
-        'ip_column'             => 'ip_address',
+        'geocode_ip'                => 'false',
+        'ip_column'                 => 'ip_address',
         // Address Geocoding
-        'geocode_address'       => 'false',
-        'address_columns'       => 'street,locality,region,postal_code,country',
+        'geocode_address'           => 'false',
+        'address_columns'           => 'street,locality,region,postal_code,country',
         // Geocoder
-        'geocoder_provider'     => '\Geocoder\Provider\YahooProvider',
-        'geocoder_adapter'      => '\Geocoder\HttpAdapter\CurlHttpAdapter',
-        'geocoder_api_key'      => 'false',
+        'geocoder_provider'         => '\Geocoder\Provider\YahooProvider',
+        'geocoder_adapter'          => '\Geocoder\HttpAdapter\CurlHttpAdapter',
+        'geocoder_api_key'          => 'false',
+        'geocoder_api_key_provider' => 'false',
     );
 
     /**
@@ -165,7 +166,19 @@ public function geocode()
         if ('false' !== $this->getParameter('geocoder_api_key')) {
             $apiKey = sprintf(', \'%s\'', $this->getParameter('geocoder_api_key'));
         }
+        elseif ('false' !== $this->getParameter('geocoder_api_key_provider')) {
+            $provider = $this->getParameter('geocoder_api_key_provider');
+            if (false === strpos($provider, '::')) {
+                $script .= '    $provider = new ' . $provider . '();'."\n";
+                $apiKey = ', $provider->getGoogleMapsKey()';
+            }
+            else {
+                $apiKey = ', ' . $provider;
+            }
+        }
+
         $script .= "    \$geocoder = new \Geocoder\Geocoder(new {$this->getParameter('geocoder_provider')}(new {$this->getParameter('geocoder_adapter')}()$apiKey));
+
 ";
 
         if ('true' === $this->getParameter('geocode_ip')) {
@@ -178,7 +191,8 @@ public function geocode()
 
         if ('true' === $this->getParameter('geocode_address') && '' !== $this->getParameter('address_columns')) {
             $script .= "    \$address_parts = array();
-    \$address_modified = false;
+    \$address_modified = \$this->isNew() || !\$this->isGeocoded();
+
 ";
             $table = $this->getTable();
             $address = '';
@@ -188,13 +202,16 @@ public function geocode()
                     $getColStr = sprintf('$this->get%s()', ucfirst($column->getPhpName()));
                     $script .= "    \$address_modified = \$address_modified || $isModifiedColStr;
     \$address_parts['{$column->getPhpName()}'] = $getColStr;
+
 ";
                 }
             }
             $script .= "    \$address = join(',', array_filter(\$address_parts));
+
     if (\$address_modified) {
         \$result = \$geocoder->geocode(\$address);
     }
+
 ";
         }
 
