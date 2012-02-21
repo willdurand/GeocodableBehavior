@@ -13,6 +13,7 @@ require_once $propeldir . '/test/tools/helpers/bookstore/BookstoreTestBase.php';
 require_once $propeldir . '/generator/lib/util/PropelQuickBuilder.php';
 require_once $propeldir . '/generator/lib/behavior/GeocodableBehavior.php';
 require_once $propeldir . '/runtime/lib/Propel.php';
+require_once __DIR__ . '/GoogleMapsApikeyProvider.php';
 
 set_include_path(implode(PATH_SEPARATOR, array(
     get_include_path(),
@@ -20,6 +21,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
     __DIR__.'/../../../vendor/Buzz/lib/',
     __DIR__.'/../../../vendor/Geocoder/src/'
 )));
+
 
 /**
  * Tests for GeocodableBehavior class
@@ -69,6 +71,42 @@ class GeocodableBehaviorTest extends PHPUnit_Framework_TestCase
             <parameter name="address_columns" value="street, city, country" />
             <!-- Geocoder -->
             <parameter name="geocoder_api_key" value="YOUR_API_KEY" />
+        </behavior>
+    </table>
+
+    <table name="geocoded_object_key_provider">
+        <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+        <column name="name" type="VARCHAR" size="100" primaryString="true" />
+        <column name="street" type="VARCHAR" size="100" primaryString="true" />
+        <column name="city" type="VARCHAR" size="100" primaryString="true" />
+        <column name="country" type="VARCHAR" size="100" primaryString="true" />
+
+        <behavior name="geocodable">
+            <!-- IP -->
+            <parameter name="geocode_ip" value="true" />
+            <!-- Address -->
+            <parameter name="geocode_address" value="true" />
+            <parameter name="address_columns" value="street, city, country" />
+            <!-- Geocoder -->
+            <parameter name="geocoder_api_key_provider" value="GoogleMapsApikeyProvider" />
+        </behavior>
+    </table>
+
+    <table name="geocoded_object_key_provider_static">
+        <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+        <column name="name" type="VARCHAR" size="100" primaryString="true" />
+        <column name="street" type="VARCHAR" size="100" primaryString="true" />
+        <column name="city" type="VARCHAR" size="100" primaryString="true" />
+        <column name="country" type="VARCHAR" size="100" primaryString="true" />
+
+        <behavior name="geocodable">
+            <!-- IP -->
+            <parameter name="geocode_ip" value="true" />
+            <!-- Address -->
+            <parameter name="geocode_address" value="true" />
+            <parameter name="address_columns" value="street, city, country" />
+            <!-- Geocoder -->
+            <parameter name="geocoder_api_key_provider" value="GoogleMapsApikeyProvider::getKey()" />
         </behavior>
     </table>
 </database>
@@ -296,5 +334,27 @@ EOF;
         $geo->save();
         $this->assertEquals(null, $geo->getLatitude());
         $this->assertEquals(null, $geo->getLongitude());
+    }
+
+    public function testKeyProvider()
+    {
+        $geo = new GeocodedObjectKeyProvider();
+        $geo->setStreet('10 avenue Gambetta');
+        $geo->setCity('Paris');
+        $geo->setCountry('France');
+        $geo->save();
+        $this->assertEquals(48.863217, $geo->getLatitude());
+        $this->assertEquals(2.388821, $geo->getLongitude());
+    }
+
+    public function testKeyProviderStatic()
+    {
+        $geo = new GeocodedObjectKeyProviderStatic();
+        $geo->setStreet('10 avenue Gambetta');
+        $geo->setCity('Paris');
+        $geo->setCountry('France');
+        $geo->save();
+        $this->assertEquals(48.863217, $geo->getLatitude());
+        $this->assertEquals(2.388821, $geo->getLongitude());
     }
 }
