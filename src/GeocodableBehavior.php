@@ -19,6 +19,10 @@ class GeocodableBehavior extends Behavior
         'auto_update'               => 'true',
         'latitude_column'           => 'latitude',
         'longitude_column'          => 'longitude',
+        'type'                      => 'DOUBLE',
+        'size'                      => 10
+        'scale'                     => 8
+        
         // IP-based Geocoding
         'geocode_ip'                => 'false',
         'ip_column'                 => 'ip_address',
@@ -45,13 +49,17 @@ class GeocodableBehavior extends Behavior
         if (!$this->getTable()->containsColumn($this->getParameter('latitude_column'))) {
             $this->getTable()->addColumn(array(
                 'name' => $this->getParameter('latitude_column'),
-                'type' => 'DOUBLE'
+                'type' => $this->getParameter('type'),
+                'size' => $this->getParameter('size'),
+                'scale'=> $this->getparameter('scale')
             ));
         }
         if (!$this->getTable()->containsColumn($this->getParameter('longitude_column'))) {
             $this->getTable()->addColumn(array(
                 'name' => $this->getParameter('longitude_column'),
-                'type' => 'DOUBLE'
+                'type' => $this->getParameter('type'),
+                'size' => $this->getParameter('size'),
+                'scale'=> $this->getparameter('scale')
             ));
         }
         if ('true' === $this->getParameter('geocode_ip') && !$this->getTable()->containsColumn($this->getParameter('ip_column'))) {
