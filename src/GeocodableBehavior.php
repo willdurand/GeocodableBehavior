@@ -20,9 +20,9 @@ class GeocodableBehavior extends Behavior
         'latitude_column'           => 'latitude',
         'longitude_column'          => 'longitude',
         'type'                      => 'DOUBLE',
-        'size'                      => 10
-        'scale'                     => 8
-        
+        'size'                      => 10,
+        'scale'                     => 8,
+
         // IP-based Geocoding
         'geocode_ip'                => 'false',
         'ip_column'                 => 'ip_address',
@@ -30,7 +30,7 @@ class GeocodableBehavior extends Behavior
         'geocode_address'           => 'false',
         'address_columns'           => 'street,locality,region,postal_code,country',
         // Geocoder
-        'geocoder_provider'         => '\Geocoder\Provider\OpenStreetMapsProvider',
+        'geocoder_provider'         => '\Geocoder\Provider\OpenStreetMapProvider',
         'geocoder_adapter'          => '\Geocoder\HttpAdapter\CurlHttpAdapter',
         'geocoder_api_key'          => 'false',
         'geocoder_api_key_provider' => 'false',
