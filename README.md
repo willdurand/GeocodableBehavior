@@ -8,18 +8,20 @@ geocodes your models when they are saved, giving you the ability to search by
 location and calculate distances between records.
 
 This behavior uses [Geocoder](https://github.com/geocoder-php/Geocoder), the
-Geocoder PHP 5.3 library and requires [Propel](http://github.com/propelorm/Propel)
-1.6.4-dev and above.
+Geocoder PHP 5.3 library and requires [Propel](http://github.com/propelorm/Propel2)
+2.0-dev and above.
 
 Installation
 ------------
-
-Cherry-pick the `GeocodableBehavior.php` file is `src/`, put it somewhere,
-then add the following line to your `propel.ini` or `build.properties`
-configuration file:
-
-``` ini
-propel.behavior.geocodable.class = path.to.GeocodableBehavior
+You need to add it to composer.  
+Propel will automatically add it to the list of available behavior
+```
+{
+  requires:
+  {
+    zeflasher/propel2-geocodable-behavior": "dev-master"
+  }
+}
 ```
 
 Usage
@@ -265,7 +267,8 @@ This is the default configuration.
 Credits
 -------
 
-William Durand <william.durand1@gmail.com>
+William Durand <william.durand1@gmail.com>  
+Xavier Martin <zeflasher+geocodable@gmail.com>
 
 
 Links
