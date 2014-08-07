@@ -105,6 +105,6 @@ class GeocodableBehaviorQueryBuilderModifier
      */
     protected function getDefaultUnit($builder)
     {
-        return sprintf('%s::KILOMETERS_UNIT', $builder->getMultiExtendObjectBuilder()->getClassname());
+        return sprintf('%s::KILOMETERS_UNIT', $builder->getTableMapClassName());
     }
 }
