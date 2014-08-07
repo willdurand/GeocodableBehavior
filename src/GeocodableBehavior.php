@@ -107,7 +107,7 @@ class GeocodableBehavior extends \Propel\Generator\Model\Behavior
         $script     = '';
         $className  = $builder->getStubObjectBuilder()->getClassname();
         $objectName = strtolower($className);
-        $peerName   = $builder->getMultiExtendObjectBuilder()->getClassname();
+        $peerName   = $builder->getTableMapClassName();;
 
         $builder->declareClassFromBuilder($builder->getStubObjectBuilder());
 

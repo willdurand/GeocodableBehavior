@@ -46,7 +46,7 @@ class GeocodableBehaviorQueryBuilderModifier
         $builder->declareClass('Criteria', 'PDO');
 
         $queryClassName = $builder->getStubQueryBuilder()->getClassname();
-        $peerClassName  = $builder->getMultiExtendObjectBuilder()->getClassname();
+        $peerClassName  = $builder->getTableMapClassName();
 
         return $this->behavior->renderTemplate('queryWithDistance', array(
             'queryClassName'            => $queryClassName,
@@ -66,7 +66,7 @@ class GeocodableBehaviorQueryBuilderModifier
         $builder->declareClass('Criteria', 'PDO');
 
         $queryClassName = $builder->getStubQueryBuilder()->getClassname();
-        $peerClassName  = $builder->getMultiExtendObjectBuilder()->getClassname();
+        $peerClassName  = $builder->getTableMapClassName();
 
         return $this->behavior->renderTemplate('queryFilterByDistanceFrom', array(
             'queryClassName'            => $queryClassName,
