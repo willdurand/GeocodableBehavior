@@ -1,4 +1,6 @@
 <?php
+namespace Geocoder\Propel\Behavior;
+
 
 /**
  * This file is part of the GeocodableBehavior package.
@@ -11,7 +13,7 @@
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
-class GeocodableBehavior extends Behavior
+class GeocodableBehavior extends \Propel\Generator\Model\Behavior
 {
     // default parameters value
     protected $parameters = array(
@@ -26,9 +28,11 @@ class GeocodableBehavior extends Behavior
         // IP-based Geocoding
         'geocode_ip'                => 'false',
         'ip_column'                 => 'ip_address',
+
         // Address Geocoding
         'geocode_address'           => 'false',
         'address_columns'           => 'street,locality,region,postal_code,country',
+
         // Geocoder
         'geocoder_provider'         => '\Geocoder\Provider\OpenStreetMapProvider',
         'geocoder_adapter'          => '\Geocoder\HttpAdapter\CurlHttpAdapter',
@@ -46,24 +50,25 @@ class GeocodableBehavior extends Behavior
      */
     public function modifyTable()
     {
-        if (!$this->getTable()->containsColumn($this->getParameter('latitude_column'))) {
-            $this->getTable()->addColumn(array(
+        $table = $this->getTable();
+        if (!$table->hasColumn($this->getParameter('latitude_column'))) {
+            $table->addColumn(array(
                 'name' => $this->getParameter('latitude_column'),
                 'type' => $this->getParameter('type'),
                 'size' => $this->getParameter('size'),
                 'scale'=> $this->getparameter('scale')
             ));
         }
-        if (!$this->getTable()->containsColumn($this->getParameter('longitude_column'))) {
-            $this->getTable()->addColumn(array(
+        if (!$table->hasColumn($this->getParameter('longitude_column'))) {
+            $table->addColumn(array(
                 'name' => $this->getParameter('longitude_column'),
                 'type' => $this->getParameter('type'),
                 'size' => $this->getParameter('size'),
                 'scale'=> $this->getparameter('scale')
             ));
         }
-        if ('true' === $this->getParameter('geocode_ip') && !$this->getTable()->containsColumn($this->getParameter('ip_column'))) {
-            $this->getTable()->addColumn(array(
+        if ('true' === $this->getParameter('geocode_ip') && !$table->hasColumn($this->getParameter('ip_column'))) {
+            $table->addColumn(array(
                 'name' => $this->getParameter('ip_column'),
                 'type' => 'CHAR',
                 'size' => 15
@@ -71,11 +76,19 @@ class GeocodableBehavior extends Behavior
         }
     }
 
+    /**
+     * @param \Propel\Generator\Builder\Om\AbstractObjectBuilder $builder
+     * @return string
+     */
     public function staticAttributes($builder)
     {
         return $this->renderTemplate('staticAttributes');
     }
 
+    /**
+     * @param \Propel\Generator\Builder\Om\AbstractObjectBuilder $builder
+     * @return string
+     */
     public function preSave($builder)
     {
         if ('false' === $this->getParameter('auto_update')) {
@@ -85,12 +98,16 @@ class GeocodableBehavior extends Behavior
         return $this->renderTemplate('objectPreSave');
     }
 
+    /**
+     * @param \Propel\Generator\Builder\Om\AbstractObjectBuilder $builder
+     * @return string
+     */
     public function objectMethods($builder)
     {
         $script     = '';
         $className  = $builder->getStubObjectBuilder()->getClassname();
         $objectName = strtolower($className);
-        $peerName   = $builder->getStubPeerBuilder()->getClassname();
+        $peerName   = $builder->getMultiExtendObjectBuilder()->getClassname();
 
         $builder->declareClassFromBuilder($builder->getStubObjectBuilder());
 
@@ -226,6 +243,11 @@ class GeocodableBehavior extends Behavior
         return 'get' . $this->getColumnForParameter($column)->getPhpName();
     }
 
+    /**
+     * @param string $columnName
+     * @param \Propel\Generator\Builder\Om\AbstractObjectBuilder $builder $builder
+     * @return mixed
+     */
     public function getColumnConstant($columnName, $builder)
     {
         return $builder->getColumnConstant($this->getColumnForParameter($columnName));
