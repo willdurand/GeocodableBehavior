@@ -86,7 +86,7 @@ class GeocodableBehaviorQueryBuilderModifier
         $builder->declareClassFromBuilder($builder->getStubObjectBuilder());
 
         $objectClassName = $builder->getStubObjectBuilder()->getClassname();
-        $variableName    = strtolower($objectClassName);
+        $variableName    = strtolower($builder->getStubObjectBuilder()->getUnqualifiedClassName());
         $queryClassName  = $builder->getStubQueryBuilder()->getClassname();
 
         return $this->behavior->renderTemplate('queryFilterNear', array(
