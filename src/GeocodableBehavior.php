@@ -22,7 +22,7 @@ class GeocodableBehavior extends \Propel\Generator\Model\Behavior
         'latitude_column'           => 'latitude',
         'longitude_column'          => 'longitude',
         'type'                      => 'DOUBLE',
-        'size'                      => 10,
+        'size'                      => 11,
         'scale'                     => 8,
 
         // IP-based Geocoding
