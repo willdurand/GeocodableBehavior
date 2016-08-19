@@ -1,5 +1,5 @@
 {
-    "name": "zeflasher/propel2-geocodable-behavior",
+    "name": "nolazybits/propel2-geocodable-behavior",
     "description": "The GeocodableBehavior helps you build geo-aware applications. It automatically geocodes your models when they are saved, giving you the ability to search by location and calculate distances between records.",
     "keywords": [ "propel", "propel2", "behavior", "geocoding", "geocodable", "geolocation", "location" ],
     "type": "propel-behavior",
@@ -27,7 +27,7 @@
         },
         {
             "name": "Xavier MARTIN",
-            "email": "zeflasher+geocodable@gmail.com"
+            "email": "nolazybits+geocodable@gmail.com"
         }
     ]
 }
