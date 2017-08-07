@@ -18,7 +18,7 @@ public function withDistance($latitude, $longitude, $unit = <?php echo $defaultU
         $earthRadius = 6371;
     }
 
-    $sql = 'ABS(%s * ACOS(%s * COS(RADIANS(%s)) * COS(RADIANS(%s) - %s) + %s * SIN(RADIANS(%s))))';
+    $sql = 'ABS(%s * ACOS( ROUND(%s * COS(RADIANS(%s)) * COS(RADIANS(%s) - %s) + %s * SIN(RADIANS(%s)),14)))';
     $preparedSql = sprintf($sql,
         $earthRadius,
         cos(deg2rad($latitude)),
