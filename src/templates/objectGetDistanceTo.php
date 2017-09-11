@@ -9,7 +9,7 @@
  */
 public function getDistanceTo(<?php echo $className ?> <?php echo $variableName ?>, $unit = <?php echo $peerName ?>::KILOMETERS_UNIT)
 {
-    $dist = rad2deg(acos(sin(deg2rad($this-><?php echo $latitudeGetter ?>())) * sin(deg2rad(<?php echo $variableName ?>-><?php echo $latitudeGetter ?>())) +  cos(deg2rad($this-><?php echo $latitudeGetter ?>())) * cos(deg2rad(<?php echo $variableName ?>-><?php echo $latitudeGetter ?>())) * cos(deg2rad($this-><?php echo $longitudeGetter ?>() - <?php echo $variableName ?>-><?php echo $longitudeGetter ?>())))) * 60 * <?php echo $peerName ?>::MILES_UNIT;
+    $dist = rad2deg(acos(round(sin(deg2rad($this-><?php echo $latitudeGetter ?>())) * sin(deg2rad(<?php echo $variableName ?>-><?php echo $latitudeGetter ?>())) +  cos(deg2rad($this-><?php echo $latitudeGetter ?>())) * cos(deg2rad(<?php echo $variableName ?>-><?php echo $latitudeGetter ?>())) * cos(deg2rad($this-><?php echo $longitudeGetter ?>() - <?php echo $variableName ?>-><?php echo $longitudeGetter ?>())),14))) * 60 * <?php echo $peerName ?>::MILES_UNIT;
 
     if (<?php echo $peerName ?>::MILES_UNIT === $unit) {
         return $dist;

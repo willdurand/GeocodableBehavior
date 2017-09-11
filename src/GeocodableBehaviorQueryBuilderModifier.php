@@ -1,4 +1,5 @@
 <?php
+namespace Geocoder\Propel\Behavior;
 
 /**
  * This file is part of the GeocodableBehavior package.
@@ -18,7 +19,7 @@ class GeocodableBehaviorQueryBuilderModifier
      */
     private $behavior;
 
-    public function __construct(Behavior $behavior)
+    public function __construct(\Propel\Generator\Model\Behavior $behavior)
     {
         $this->behavior = $behavior;
     }
@@ -36,12 +37,16 @@ class GeocodableBehaviorQueryBuilderModifier
         return $script;
     }
 
+    /**
+     * @param \Propel\Generator\Builder\Om\AbstractObjectBuilder $builder $builder
+     * @return string
+     */
     public function addWithDistance($builder)
     {
         $builder->declareClass('Criteria', 'PDO');
 
         $queryClassName = $builder->getStubQueryBuilder()->getClassname();
-        $peerClassName  = $builder->getStubPeerBuilder()->getClassname();
+        $peerClassName  = $builder->getTableMapClassName();
 
         return $this->behavior->renderTemplate('queryWithDistance', array(
             'queryClassName'            => $queryClassName,
@@ -52,12 +57,16 @@ class GeocodableBehaviorQueryBuilderModifier
         ));
     }
 
+    /**
+     * @param \Propel\Generator\Builder\Om\AbstractObjectBuilder $builder $builder
+     * @return string
+     */
     public function addFilterByDistanceFrom($builder)
     {
         $builder->declareClass('Criteria', 'PDO');
 
         $queryClassName = $builder->getStubQueryBuilder()->getClassname();
-        $peerClassName  = $builder->getStubPeerBuilder()->getClassname();
+        $peerClassName  = $builder->getTableMapClassName();
 
         return $this->behavior->renderTemplate('queryFilterByDistanceFrom', array(
             'queryClassName'            => $queryClassName,
@@ -68,12 +77,16 @@ class GeocodableBehaviorQueryBuilderModifier
         ));
     }
 
+    /**
+     * @param \Propel\Generator\Builder\Om\AbstractObjectBuilder $builder $builder
+     * @return string
+     */
     public function addFilterNear($builder)
     {
         $builder->declareClassFromBuilder($builder->getStubObjectBuilder());
 
         $objectClassName = $builder->getStubObjectBuilder()->getClassname();
-        $variableName    = strtolower($objectClassName);
+        $variableName    = strtolower($builder->getStubObjectBuilder()->getUnqualifiedClassName());
         $queryClassName  = $builder->getStubQueryBuilder()->getClassname();
 
         return $this->behavior->renderTemplate('queryFilterNear', array(
@@ -86,8 +99,12 @@ class GeocodableBehaviorQueryBuilderModifier
         ));
     }
 
+    /**
+     * @param \Propel\Generator\Builder\Om\AbstractObjectBuilder $builder $builder
+     * @return string
+     */
     protected function getDefaultUnit($builder)
     {
-        return sprintf('%s::KILOMETERS_UNIT', $builder->getStubPeerBuilder()->getClassname());
+        return sprintf('%s::KILOMETERS_UNIT', $builder->getTableMapClassName());
     }
 }

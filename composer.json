@@ -1,16 +1,16 @@
 {
-    "name": "willdurand/propel-geocodable-behavior",
+    "name": "nolazybits/propel2-geocodable-behavior",
     "description": "The GeocodableBehavior helps you build geo-aware applications. It automatically geocodes your models when they are saved, giving you the ability to search by location and calculate distances between records.",
-    "keywords": [ "propel", "behavior", "geocoding", "geocodable" ],
-    "authors": [
-        {
-            "name": "William DURAND",
-            "email": "william.durand1@gmail.com"
-        }
-    ],
+    "keywords": [ "propel", "propel2", "behavior", "geocoding", "geocodable", "geolocation", "location" ],
+    "type": "propel-behavior",
+    "extra": {
+        "name": "geocodable",
+        "class": "\\Geocoder\\Propel\\Behavior\\GeocodableBehavior"
+    },
+
     "require": {
         "php": ">=5.2.4",
-        "propel/propel1": "~1.6,>=1.6.4",
+        "propel/propel": "~2.0@dev",
         "willdurand/geocoder": "~2.3"
     },
     "require-dev": {
@@ -18,5 +18,16 @@
     "autoload": {
         "classmap": ["src/"]
     },
-    "license": "MIT"
+
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "William DURAND",
+            "email": "william.durand1@gmail.com"
+        },
+        {
+            "name": "Xavier MARTIN",
+            "email": "nolazybits+geocodable@gmail.com"
+        }
+    ]
 }
