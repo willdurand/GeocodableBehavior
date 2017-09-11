@@ -176,7 +176,7 @@ class GeocodableBehavior extends \Propel\Generator\Model\Behavior
             $columns = array();
             foreach (explode(',', $this->getParameter('address_columns')) as $col) {
                 if ($column = $this->getTable()->getColumn(trim($col))) {
-                    $columns[$column->getConstantName()] = $column->getPhpName();
+                    $columns[$builder->getColumnConstant($column)] = $column->getPhpName();
                 }
             }
 
